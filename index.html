@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <title>Día de las Flores Amarillas</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+      .container {
+        text-align: center;
+      }
+      h1 {
+        color: #ffd700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      #startButton {
+        font-size: 1.2em;
+        padding: 10px 20px;
+        background-color: #ffd700;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      #startButton:hover {
+        background-color: #ffc000;
+      }
+      .heart {
+        position: absolute;
+        font-size: 24px;
+        transition: opacity 0.5s ease-out;
+        animation: float 3s ease-in-out;
+        pointer-events: none;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-100px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        #content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Altura completa de la ventana */
+          margin: 0; /* Asegúrate de que no haya márgenes */
+          padding: 0; /* Quita cualquier relleno que pueda interferir */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Para la señorita Tatiana</h1>
+      <h2>Con mucho cariño</h2>
+      <button id="startButton">Empezar</button>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+      <source src="public/audio.mp3" type="audio/mpeg" />
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <div id="content"></div>
+
+    <script>
+      const startButton = document.getElementById("startButton");
+      const backgroundMusic = document.getElementById("backgroundMusic");
+      const container = document.querySelector(".container");
+
+      startButton.addEventListener("click", () => {
+        backgroundMusic.play();
+        startButton.style.display = "none";
+        createHearts();
+      });
+
+      function createHearts() {
+        for (let i = 0; i < 100; i++) {
+          // Changed from 50 to 20
+          setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️"; // Red heart emoji
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.top = `${Math.random() * 100}vh`;
+            heart.style.opacity = "0";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+              heart.style.opacity = "1";
+            }, 100);
+
+            // Remove the heart after animation
+            setTimeout(() => {
+              heart.remove();
+            }, 3000);
+          }, i * 100);
+        }
+      }
+      document
+        .getElementById("startButton")
+        .addEventListener("click", function () {
+          fetch("FLORES.html")
+            .then((response) => response.text())
+            .then((data) => {
+              document.getElementById("content").innerHTML = data;
+            })
+            .catch((error) =>
+              console.error("Error al cargar FLORES.html:", error)
+            );
+        });
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>
